@@ -1,0 +1,50 @@
+{
+    "name": "astroselling/liniosdk",
+    "description": "A Linio SDK for Laravel",
+    "license": "license",
+    "authors": [
+        {
+            "name": "Astroselling",
+            "email": "soporte@astroselling.com",
+            "homepage": "https://astroselling.com"
+        }
+    ],
+    "homepage": "https://github.com/astroselling/liniosdk",
+    "keywords": ["Laravel", "LinioSdk"],
+    "repositories": [
+        {
+            "type": "path",
+            "url": "../../../packages/*/*/"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~7|~8",
+        "linio/seller-center-SDK": "dev-discovery-strategy",
+        "astroselling/asexceptions": "@dev",
+        "guzzlehttp/psr7": "^1.7"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~9.0",
+        "orchestra/testbench": "~5|~6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Astroselling\\LinioSdk\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Astroselling\\LinioSdk\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Astroselling\\LinioSdk\\LinioSdkServiceProvider"
+            ],
+            "aliases": {
+                "LinioSdk": "Astroselling\\LinioSdk\\Facades\\LinioSdk"
+            }
+        }
+    }
+}
