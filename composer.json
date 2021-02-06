@@ -12,7 +12,7 @@
     "homepage": "https://github.com/astroselling/liniosdk",
     "keywords": ["Laravel", "LinioSdk"],
     "repositories": {
-        "iugosds/seller-center-sdk": {
+        "linio/seller-center-sdk": {
             "type": "vcs",
             "url": "https://github.com/iugosds/seller-center-sdk"
         },
