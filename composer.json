@@ -11,16 +11,20 @@
     ],
     "homepage": "https://github.com/astroselling/liniosdk",
     "keywords": ["Laravel", "LinioSdk"],
-    "repositories": [
-        {
-            "type": "path",
-            "url": "../../../packages/*/*/"
+    "repositories": {
+        "iugosds/seller-center-sdk": {
+            "type": "vcs",
+            "url": "https://github.com/iugosds/seller-center-sdk"
+        },
+        "astroselling/asexceptions": {
+            "type": "git",
+            "url": "https://bitbucket.org/iugosds/asexceptions.git"
         }
-    ],
+    },
     "require": {
         "illuminate/support": "~7|~8",
         "linio/seller-center-SDK": "dev-discovery-strategy",
-        "astroselling/asexceptions": "@dev",
+        "astroselling/asexceptions": "^1.0",
         "guzzlehttp/psr7": "^1.7"
     },
     "require-dev": {
