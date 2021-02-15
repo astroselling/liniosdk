@@ -17,8 +17,11 @@ use Linio\SellerCenter\Model\Product\Image;
 use Linio\SellerCenter\Model\Product\Images;
 use Linio\SellerCenter\Model\Product\ProductData as LinioProductData;
 use DateTime;
+use Exception;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Message;
+use Linio\SellerCenter\Contract\ProductFilters;
+use Linio\SellerCenter\Service\ProductManager;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -51,11 +54,30 @@ class LinioSdk
         $this->customLogCalls = config('liniosdk.custom_log_calls');
     }
 
-    public function getProducts(int $limit, int $offset): array
+    public function getProducts(int $limit, int $offset, string $filter = null): array
     {
+        if (!$filter) {
+            $filter = ProductManager::DEFAULT_FILTER;
+        }
+        if (!in_array($filter, ProductFilters::FILTERS)) {
+            throw new FetchProductException(
+                new Exception('Unknown product filter: '. $filter, 500),
+                ['Called From' => 'Linio get Products',]
+            );
+        }
         try {
-            $this->logLinioCall('getAllProducts');
-            return $this->sdk->products()->getAllProducts($limit, $offset);
+            $this->logLinioCall("getAllProducts (filter: $filter)");
+            return $this->sdk->products()->getProductsFromParameters(
+                null, //CreatedAfter
+                null, //createdBefore
+                null, //search
+                $filter,
+                $limit,
+                $offset,
+                null, // skuSellerList
+                null, // updatedAfter
+                null, // updatedBefore
+            );
         } catch (RequestException $e) {
             throw new FetchProductException($e, [
                 'Called From' => 'Linio get Products',
@@ -65,6 +87,30 @@ class LinioSdk
                 'Request' => Message::toString($e->getRequest()),
             ]);
         }
+    }
+
+    public function deleteProducts(array $deleteIds): LinioFeed
+    {
+        try {
+            $linioProducts = new LinioProducts();
+            foreach ($deleteIds as $idInMkp) {
+                $prod = LinioProduct::fromSku($idInMkp);
+                $linioProducts->add($prod);
+            }
+            $this->logLinioCall('deleteProducts');
+            $feedResponse = $this->sdk->products()->productRemove($linioProducts);
+            $feed = $this->sdk->feeds()->getFeedStatusById($feedResponse->getRequestId());
+            $linioFeed = LinioFeed::saveFromLinio($feed);
+        } catch (RequestException $e) {
+            throw new FetchException($e, [
+                'Called From' => 'Delete Products',
+                'Response' => Message::toString($e->getResponse()),
+                'Response Code' => $e->getResponse()->getStatusCode()
+                    . " (" . $e->getResponse()->getReasonPhrase() . ")",
+                'Request' => Message::toString($e->getRequest()),
+            ]);
+        }
+        return $linioFeed;
     }
 
     public function getOrders(int $limit, int $offset): array
