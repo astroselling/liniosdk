@@ -6,9 +6,9 @@ use Astroselling\LinioSdk\Exceptions\FetchException;
 use Astroselling\LinioSdk\Exceptions\FetchOrderException;
 use Astroselling\LinioSdk\Exceptions\FetchProductException;
 use Astroselling\LinioSdk\Models\LinioFeed;
+use Linio\SellerCenter\SellerCenterSdk;
 use Linio\SellerCenter\Application\Configuration as LinioConfiguration;
 use Linio\SellerCenter\Contract\ProductStatus;
-use Linio\SellerCenter\SellerCenterSdk;
 use Linio\SellerCenter\Model\Product\Products as LinioProducts;
 use Linio\SellerCenter\Model\Product\Product as LinioProduct;
 use Linio\SellerCenter\Model\Category\Category as LinioCategory;
@@ -16,14 +16,15 @@ use Linio\SellerCenter\Model\Brand\Brand as LinioBrand;
 use Linio\SellerCenter\Model\Product\Image;
 use Linio\SellerCenter\Model\Product\Images;
 use Linio\SellerCenter\Model\Product\ProductData as LinioProductData;
-use DateTime;
-use Exception;
-use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7\Message;
+use Linio\SellerCenter\Exception\ErrorResponseException;
 use Linio\SellerCenter\Contract\ProductFilters;
 use Linio\SellerCenter\Service\ProductManager;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\Psr7\Message;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
+use DateTime;
+use Exception;
 
 class LinioSdk
 {
@@ -123,7 +124,7 @@ class LinioSdk
         try {
             $this->logLinioCall('getOrdersCreatedAfter');
             return $this->sdk->orders()->getOrdersCreatedAfter($after, $limit, $offset, $sortBy, $sortDir);
-        } catch (RequestException $e) {
+        } catch (RequestException | ErrorResponseException $e) {
             throw new FetchOrderException($e, [
                 'Called From' => 'Linio get Orders',
                 'Response' => Message::toString($e->getResponse()),
