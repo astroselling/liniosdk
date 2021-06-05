@@ -41,6 +41,11 @@ class LinioSdk
         "TSP" => "https://sellercenter-api-staging.linio.com.pe/",
     ];
 
+    public function getSdkUsername(): string
+    {
+        return $this->userName;
+    }
+
     public function __construct(string $userName, string $apiKey, string $countryISO)
     {
         // $logger = new Logger('LinioLogger');
@@ -124,13 +129,24 @@ class LinioSdk
         try {
             $this->logLinioCall('getOrdersCreatedAfter');
             return $this->sdk->orders()->getOrdersCreatedAfter($after, $limit, $offset, $sortBy, $sortDir);
-        } catch (RequestException | ErrorResponseException $e) {
+        } catch (RequestException $e) {
             throw new FetchOrderException($e, [
                 'Called From' => 'Linio get Orders',
                 'Response' => Message::toString($e->getResponse()),
                 'Response Code' => $e->getResponse()->getStatusCode()
                     . " (" . $e->getResponse()->getReasonPhrase() . ")",
                 'Request' => Message::toString($e->getRequest()),
+                'Linio Username' => $this->getSdkUsername(),
+            ]);
+        } catch (ErrorResponseException $e) {
+            throw new FetchOrderException(
+                new Exception('Error response exception', $e->getCode()),
+                [
+                    'Called From' => 'Linio get Orders',
+                    'Type' => $e->getType(),
+                    'Action' => $e->getAction(),
+                    'Request' => Message::toString($e->getRequest()),
+                    'Linio Username' => $this->getSdkUsername(),
             ]);
         }
     }
