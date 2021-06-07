@@ -145,7 +145,6 @@ class LinioSdk
                     'Called From' => 'Linio get Orders',
                     'Type' => $e->getType(),
                     'Action' => $e->getAction(),
-                    'Request' => Message::toString($e->getRequest()),
                     'Linio Username' => $this->getSdkUsername(),
             ]);
         }
