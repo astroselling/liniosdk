@@ -19,6 +19,7 @@ use Linio\SellerCenter\Model\Product\ProductData as LinioProductData;
 use Linio\SellerCenter\Exception\ErrorResponseException;
 use Linio\SellerCenter\Contract\ProductFilters;
 use Linio\SellerCenter\Service\ProductManager;
+use Linio\SellerCenter\Service\WebhookManager;
 use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Psr7\Message;
 use Monolog\Logger;
