@@ -363,4 +363,13 @@ class LinioSdk
             $method
         ));
     }
+    
+    /**
+     * Devuelve el manager para gestionar los Webhooks.
+     * @return WebhookManager
+     */
+    public function getWebHook(): WebhookManager
+    {
+        return $this->sdk->webhooks();
+    }
 }
