@@ -61,6 +61,19 @@ class LinioSdk
         $this->customLogCalls = config('liniosdk.custom_log_calls');
     }
 
+    private function exceptionFromErrorResponse(ErrorResponseException $e)
+    {
+        return new FetchOrderException(
+            new Exception('Error response exception', $e->getCode()),
+            [
+                'Called From' => 'Linio get Order Items',
+                'Type' => $e->getType(),
+                'Action' => $e->getAction(),
+                'Message' => $e->getMessage(),
+                'Linio Username' => $this->getSdkUsername(),
+        ]);
+    }
+
     public function getProducts(int $limit, int $offset, string $filter = null): array
     {
         if (!$filter) {
@@ -93,6 +106,8 @@ class LinioSdk
                     . " (" . $e->getResponse()->getReasonPhrase() . ")",
                 'Request' => Message::toString($e->getRequest()),
             ]);
+        } catch (ErrorResponseException $e) {
+            throw $this->exceptionFromErrorResponse($e);
         }
     }
 
@@ -116,6 +131,8 @@ class LinioSdk
                     . " (" . $e->getResponse()->getReasonPhrase() . ")",
                 'Request' => Message::toString($e->getRequest()),
             ]);
+        } catch (ErrorResponseException $e) {
+            throw $this->exceptionFromErrorResponse($e);
         }
         return $linioFeed;
     }
@@ -140,14 +157,7 @@ class LinioSdk
                 'Linio Username' => $this->getSdkUsername(),
             ]);
         } catch (ErrorResponseException $e) {
-            throw new FetchOrderException(
-                new Exception('Error response exception', $e->getCode()),
-                [
-                    'Called From' => 'Linio get Orders',
-                    'Type' => $e->getType(),
-                    'Action' => $e->getAction(),
-                    'Linio Username' => $this->getSdkUsername(),
-            ]);
+            throw $this->exceptionFromErrorResponse($e);
         }
     }
 
@@ -167,6 +177,8 @@ class LinioSdk
                     . " (" . $e->getResponse()->getReasonPhrase() . ")",
                 'Request' => Message::toString($e->getRequest()),
             ]);
+        } catch (ErrorResponseException $e) {
+            throw $this->exceptionFromErrorResponse($e);
         }
     }
 
@@ -186,6 +198,8 @@ class LinioSdk
                     . " (" . $e->getResponse()->getReasonPhrase() . ")",
                 'Request' => Message::toString($e->getRequest()),
             ]);
+        } catch (ErrorResponseException $e) {
+            throw $this->exceptionFromErrorResponse($e);
         }
     }
 
@@ -234,6 +248,8 @@ class LinioSdk
                     . " (" . $e->getResponse()->getReasonPhrase() . ")",
                 'Request' => Message::toString($e->getRequest()),
             ]);
+        } catch (ErrorResponseException $e) {
+            throw $this->exceptionFromErrorResponse($e);
         }
     }
 
@@ -291,6 +307,8 @@ class LinioSdk
                 'Request' => Message::toString($e->getRequest()),
                 'Products' => $products
             ]);
+        } catch (ErrorResponseException $e) {
+            throw $this->exceptionFromErrorResponse($e);
         }
     }
 
@@ -321,6 +339,8 @@ class LinioSdk
                 'Request' => Message::toString($e->getRequest()),
                 'UpdateData' => $updateData
             ]);
+        } catch (ErrorResponseException $e) {
+            throw $this->exceptionFromErrorResponse($e);
         }
         return $linioFeed;
     }
@@ -349,6 +369,8 @@ class LinioSdk
                 'Request' => Message::toString($e->getRequest()),
                 'UpdateData' => $images
             ]);
+        } catch (ErrorResponseException $e) {
+            throw $this->exceptionFromErrorResponse($e);
         }
         return $linioFeed;
     }
@@ -364,7 +386,7 @@ class LinioSdk
             $method
         ));
     }
-    
+
     /**
      * Devuelve el manager para gestionar los Webhooks.
      * @return WebhookManager
