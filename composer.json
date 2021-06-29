@@ -23,7 +23,7 @@
     },
     "require": {
         "illuminate/support": "~7|~8",
-        "linio/seller-center-SDK": "dev-discovery-strategy",
+        "linio/seller-center-sdk": "dev-discovery-strategy",
         "astroselling/asexceptions": "^1.0",
         "guzzlehttp/psr7": "^1.7"
     },

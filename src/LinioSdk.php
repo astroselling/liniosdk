@@ -318,11 +318,20 @@ class LinioSdk
             $linioProducts = new LinioProducts();
             foreach ($updateData as $sku => $prodData) {
                 $prod = LinioProduct::fromSku($sku);
+                if ($prodData['stock'] !== null) {
+                    $prod->setQuantity($prodData['stock']);
+                }
                 if ($prodData['price'] !== null) {
                     $prod->setPrice($prodData['price']);
                 }
-                if ($prodData['stock'] !== null) {
-                    $prod->setQuantity($prodData['stock']);
+                if (isset($prodData['sale_price']) && $prodData['sale_price']) {
+                    $prod->setSalePrice($prodData['sale_price']);
+                }
+                if (isset($prodData['sale_start']) && $prodData['sale_start']) {
+                    $prod->setSaleStartDate($prodData['sale_start']);
+                }
+                if (isset($prodData['sale_end']) && $prodData['sale_end']) {
+                    $prod->setSaleEndDate($prodData['sale_end']);
                 }
                 $linioProducts->add($prod);
             }
