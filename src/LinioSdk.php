@@ -333,6 +333,7 @@ class LinioSdk
                 if (isset($prodData['sale_end']) && $prodData['sale_end']) {
                     $prod->setSaleEndDate($prodData['sale_end']);
                 }
+
                 $linioProducts->add($prod);
             }
             $this->logLinioCall('productUpdate');
