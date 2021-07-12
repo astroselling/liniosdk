@@ -405,4 +405,37 @@ class LinioSdk
     {
         return $this->sdk->webhooks();
     }
+    
+    /**
+     * Devuelve una orden.
+     *
+     * @param int $orderId
+     * @return array
+     * @throws FetchOrderException
+     */
+    public function getOrder(int $orderId): object
+    {
+        try {
+            $this->logLinioCall('getOrder');
+            return $this->sdk->orders()->getOrder($orderId);
+        } catch (RequestException $e) {
+            throw new FetchOrderException($e, [
+                'Called From' => 'Linio get Order',
+                'Response' => Message::toString($e->getResponse()),
+                'Response Code' => $e->getResponse()->getStatusCode()
+                    . " (" . $e->getResponse()->getReasonPhrase() . ")",
+                'Request' => Message::toString($e->getRequest()),
+                'Linio Username' => $this->getSdkUsername(),
+            ]);
+        } catch (ErrorResponseException $e) {
+            throw new FetchOrderException(
+                new Exception('Error response exception', $e->getCode()),
+                [
+                    'Called From' => 'Linio get Order',
+                    'Type' => $e->getType(),
+                    'Action' => $e->getAction(),
+                    'Linio Username' => $this->getSdkUsername(),
+                ]);
+        }
+    }
 }
