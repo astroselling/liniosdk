@@ -49,12 +49,9 @@ class LinioSdk
 
     public function __construct(string $userName, string $apiKey, string $countryISO)
     {
-        // $logger = new Logger('LinioLogger');
-        // $logger->pushHandler(new StreamHandler(storage_path('logs/sdk-log.log'), Logger::INFO));
-        // $logger->pushHandler(new StreamHandler(storage_path('logs/sdk-log-debug.log'), Logger::DEBUG));
         $logger = null;
         $client = new \GuzzleHttp\Client();
-        $configuration = new LinioConfiguration($apiKey, $userName, self::URLS[$countryISO], '1.0');
+        $configuration = new LinioConfiguration($apiKey, $userName, self::URLS[$countryISO]);
         $this->sdk = new SellerCenterSdk($configuration, $client, $logger);
 
         $this->userName = $userName; // Used only for logging
@@ -71,7 +68,8 @@ class LinioSdk
                 'Action' => $e->getAction(),
                 'Message' => $e->getMessage(),
                 'Linio Username' => $this->getSdkUsername(),
-        ]);
+            ]
+        );
     }
 
     public function getProducts(int $limit, int $offset, string $filter = null): array

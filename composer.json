@@ -14,16 +14,16 @@
     "repositories": {
         "linio/seller-center-sdk": {
             "type": "vcs",
-            "url": "https://github.com/iugosds/seller-center-sdk"
+            "url": "https://github.com/astroselling/seller-center-sdk.git"
         },
         "astroselling/asexceptions": {
-            "type": "git",
-            "url": "https://bitbucket.org/iugosds/asexceptions.git"
+            "type": "vcs",
+            "url": "git@github.com:astroselling/asexceptions.git"
         }
     },
     "require": {
         "illuminate/support": "~7|~8",
-        "linio/seller-center-sdk": "dev-discovery-strategy",
+        "linio/seller-center-sdk": "dev-gsc-master-dev",
         "astroselling/asexceptions": "^1.0",
         "guzzlehttp/psr7": "^1.7"
     },
