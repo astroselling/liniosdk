@@ -268,6 +268,9 @@ class LinioSdk
             if (isset($product['ShortDescription'])) {
                 $productData->add('ShortDescription', $product['ShortDescription']);
             }
+            if (isset($product['Color'])) {
+                $productData->add('Color', $product['Color']);
+            }
             $linioProd = LinioProduct::fromBasicData(
                 $product['SellerSku'], // string
                 $product['Name'], // string
