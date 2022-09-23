@@ -5,10 +5,12 @@ namespace Astroselling\LinioSdk\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Linio\SellerCenter\Model\Feed\Feed;
+use Illuminate\Database\Eloquent\MassPrunable;
 
 class LinioFeed extends Model
 {
     use SoftDeletes;
+    use MassPrunable;
 
     protected const STATUS_QUEUED = 'Queued'; // Feed was successfully added to the queue and is awaiting processing
     protected const STATUS_PROCESSING = 'Processing'; // Feed is currently being processed by the server
@@ -46,5 +48,10 @@ class LinioFeed extends Model
         $newFeed->failure_reports = $feed->getFailureReports();
         $newFeed->save();
         return $newFeed;
+    }
+    
+    public function prunable()
+    {
+        return static::where('created_at', '<=', now()->subMonth());
     }
 }
