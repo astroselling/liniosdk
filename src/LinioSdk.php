@@ -271,6 +271,15 @@ class LinioSdk
             if (isset($product['Color'])) {
                 $productData->add('Color', $product['Color']);
             }
+            if (isset($product['SanitaryRegistration'])) {
+                $productData->add('SanitaryRegistration', $product['SanitaryRegistration']);
+            }
+            if (isset($product['ProductContent'])) {
+                $productData->add('ProductContent', $product['ProductContent']);
+            }
+            if (isset($product['Intencity'])) {
+                $productData->add('Intencity', $product['Intencity']);
+            }
             $linioProd = LinioProduct::fromBasicData(
                 $product['SellerSku'], // string
                 $product['Name'], // string
