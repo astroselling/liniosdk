@@ -280,6 +280,9 @@ class LinioSdk
             if (isset($product['Intencity'])) {
                 $productData->add('Intencity', $product['Intencity']);
             }
+            if (isset($product['SmallPieces'])) {
+                $productData->add('SmallPieces', $product['SmallPieces']);
+            }
             $linioProd = LinioProduct::fromBasicData(
                 $product['SellerSku'], // string
                 $product['Name'], // string
