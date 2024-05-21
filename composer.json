@@ -22,7 +22,7 @@
         }
     },
     "require": {
-        "illuminate/support": "~7|~8",
+        "illuminate/support": "~7|~8|~9",
         "linio/seller-center-sdk": "dev-gsc-master-dev",
         "astroselling/asexceptions": "^1.0",
         "guzzlehttp/psr7": "^1.7"
@@ -49,6 +49,11 @@
             "aliases": {
                 "LinioSdk": "Astroselling\\LinioSdk\\Facades\\LinioSdk"
             }
+        }
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
         }
     }
 }
