@@ -22,14 +22,14 @@
         }
     },
     "require": {
-        "illuminate/support": "~7|~8|~9",
+        "illuminate/support": "~7|~8|~9|~10",
         "linio/seller-center-sdk": "dev-gsc-master-dev",
         "astroselling/asexceptions": "^1.0",
         "guzzlehttp/psr7": "^1.7"
     },
     "require-dev": {
         "phpunit/phpunit": "~9.0",
-        "orchestra/testbench": "~5|~6"
+        "orchestra/testbench": "~5|~6|~7|~8"
     },
     "autoload": {
         "psr-4": {
